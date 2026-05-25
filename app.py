@@ -82,7 +82,7 @@ transform_pipeline = transforms.Compose([
 ])
 
 # ==========================================
-# 📤 4. 前端 UI 與預測邏輯 (HTML 語法外放修正版)
+# 📤 4. 前端 UI 與預測邏輯 (容器高度對齊版 - 安全不噴碼)
 # ==========================================
 uploaded_file = st.file_uploader("選擇一張公主圖片...", type=["jpg", "jpeg", "png", "bmp"])
 
@@ -111,37 +111,22 @@ if uploaded_file is not None:
         st.success(f"🎉 辨識結果：**{predicted_class}**")
         st.info(f"📊 信心度 (Confidence)：**{score:.2f}%**")
         
-    # ---- 👉 右側欄位：自製緊湊型進度條 (修正 Markdown 位置) ----
+    # ---- 👉 右側欄位：使用固定高度容器，保證底部與左邊對齊 ----
     with col2:
         st.write("🔍 **所有 11 名公主候選機率排名：**")
         
         # 進行 11 名的大到小排序
         all_prob, all_idx = torch.topk(probabilities, len(CLASS_NAMES))
         
-        # 1. 在迴圈外面，初始化 HTML 容器外殼
-        html_content = '<div style="margin-top: 0px;">'
-        
-        # 2. 進入迴圈，這裏「只做字串拼接」，絕對不呼叫任何 st.xxx
-        for i in range(len(CLASS_NAMES)):
-            prob_value = all_prob[i].item()      
-            prob_percentage = prob_value * 100   
-            class_name = CLASS_NAMES[all_idx[i].item()]
-            
-            # 每個進度條的高度與間距經過精密微調 (margin-bottom: 3px)，確保底部貼齊左邊
-            html_content += f"""
-            <div style="margin-bottom: 4px; font-size: 14px; line-height: 1.1; font-family: sans-serif;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                    <span>{i+1}. {class_name}</span>
-                    <strong>{prob_percentage:.2f}%</strong>
-                </div>
-                <div style="background-color: #f0f2f6; border-radius: 4px; height: 6px; width: 100%;">
-                    <div style="background-color: #2b5c8f; height: 6px; border-radius: 4px; width: {prob_percentage}%;"></div>
-                </div>
-            </div>
-            """
-            
-        # 3. 離開迴圈後，把 HTML 容器封口
-        html_content += '</div>'
-        
-        # 4. 🔥 關鍵修正：在迴圈最外面，只呼叫這一次 st.markdown 渲染全部 11 個進度條！
-        st.markdown(html_content, unsafe_allow_html=True)
+        # 💡 核心魔法：建立一個固定高度的區塊（410 像素是大約對齊左邊底部的數值）
+        # 你可以自由把 410 改成 390 或 420，直到它在你的瀏覽器畫面上完美拉平！
+        with st.container(height=410, border=False):
+            for i in range(len(CLASS_NAMES)):
+                prob_value = all_prob[i].item()      
+                prob_percentage = prob_value * 100   
+                class_name = CLASS_NAMES[all_idx[i].item()]
+                
+                # 使用原生的 write 顯示名字與百分比
+                st.write(f"{i+1}. {class_name}: **{prob_percentage:.2f}%**")
+                # 使用原生的 progress 進度條，絕對不噴程式碼
+                st.progress(prob_value)
