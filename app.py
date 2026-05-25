@@ -82,7 +82,7 @@ transform_pipeline = transforms.Compose([
 ])
 
 # ==========================================
-# 📤 4. 前端 UI 與預測邏輯 (底部完美貼齊版)
+# 📤 4. 前端 UI 與預測邏輯 (HTML 語法外放修正版)
 # ==========================================
 uploaded_file = st.file_uploader("選擇一張公主圖片...", type=["jpg", "jpeg", "png", "bmp"])
 
@@ -111,25 +111,26 @@ if uploaded_file is not None:
         st.success(f"🎉 辨識結果：**{predicted_class}**")
         st.info(f"📊 信心度 (Confidence)：**{score:.2f}%**")
         
-    # ---- 👉 右側欄位：自製緊湊型進度條，完美貼齊左側底部 ----
+    # ---- 👉 右側欄位：自製緊湊型進度條 (修正 Markdown 位置) ----
     with col2:
         st.write("🔍 **所有 11 名公主候選機率排名：**")
         
         # 進行 11 名的大到小排序
         all_prob, all_idx = torch.topk(probabilities, len(CLASS_NAMES))
         
-        # 建立自製進度條的 HTML 語法
-        html_content = '<div style="margin-top: 5px;">'
+        # 1. 在迴圈外面，初始化 HTML 容器外殼
+        html_content = '<div style="margin-top: 0px;">'
         
+        # 2. 進入迴圈，這裏「只做字串拼接」，絕對不呼叫任何 st.xxx
         for i in range(len(CLASS_NAMES)):
             prob_value = all_prob[i].item()      
             prob_percentage = prob_value * 100   
             class_name = CLASS_NAMES[all_idx[i].item()]
             
-            # 透過 CSS 嚴格控制每行高度 (margin: 2px) 與緊湊度，使其底部剛好對齊左邊
+            # 每個進度條的高度與間距經過精密微調 (margin-bottom: 3px)，確保底部貼齊左邊
             html_content += f"""
-            <div style="margin-bottom: 3px; font-size: 14px; line-height: 1.2;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1px;">
+            <div style="margin-bottom: 4px; font-size: 14px; line-height: 1.1; font-family: sans-serif;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
                     <span>{i+1}. {class_name}</span>
                     <strong>{prob_percentage:.2f}%</strong>
                 </div>
@@ -139,7 +140,8 @@ if uploaded_file is not None:
             </div>
             """
             
+        # 3. 離開迴圈後，把 HTML 容器封口
         html_content += '</div>'
         
-        # 渲染自製的完美對齊儀表板
+        # 4. 🔥 關鍵修正：在迴圈最外面，只呼叫這一次 st.markdown 渲染全部 11 個進度條！
         st.markdown(html_content, unsafe_allow_html=True)
