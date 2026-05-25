@@ -9,7 +9,7 @@ import urllib.request
 # ==========================================
 # 👑 1. 設定頁面與 11 類公主標籤 (完全符合系統排序)
 # ==========================================
-st.set_page_config(page_title="迪士尼公主 AI 辨識系統", page_icon="👑", layout="wide")
+st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layout="wide")
 
 st.title("👑 玻璃鞋的精準度：AI能夠幫王子找到落跑的公主嗎？")
 st.write("請上傳一張迪士尼公主的圖片，讓玻璃鞋幫忙辨識她是誰！")
