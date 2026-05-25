@@ -82,49 +82,48 @@ transform_pipeline = transforms.Compose([
 ])
 
 # ==========================================
-# 📤 4. 前端 UI 與預測邏輯
+# 📤 4. 前端 UI 與預測邏輯 (升級為專業雙欄位版面)
 # ==========================================
 uploaded_file = st.file_uploader("選擇一張公主圖片...", type=["jpg", "jpeg", "png", "bmp"])
 
 if uploaded_file is not None:
-    # 顯示上傳的圖片
+    # 讀取並轉換圖片
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="📷 上傳的圖片", use_container_width=True)
     
-    st.write("🧠 AI 辨識中...")
-    
+    # 🧠 先跑 AI 預測邏輯，把數據算好，等一下才能塞進欄位
     if model is not None:
-        # 影像預處理
         input_tensor = transform_pipeline(image).unsqueeze(0) # 增加 Batch 維度
-        
-        # 進行預測
         with torch.no_grad():
             outputs = model(input_tensor)
             probabilities = torch.nn.functional.softmax(outputs, dim=1)[0]
             confidence, predicted_idx = torch.max(probabilities, 0)
         
-        # 顯示預測結果
         predicted_class = CLASS_NAMES[predicted_idx.item()]
         score = confidence.item() * 100
-        
+
+    # 🎬 關鍵：使用 st.columns 把版面切成左右兩邊 (權重 1:1)
+    col1, col2 = st.columns(2)
+    
+    # ---- 👈 左側欄位：放上傳的圖片與主要預測結果 ----
+    with col1:
+        st.image(image, caption="📷 上傳的圖片", use_container_width=True)
+        st.write("🧠 AI 辨識中...")
         st.success(f"🎉 辨識結果：**{predicted_class}**")
         st.info(f"📊 信心度 (Confidence)：**{score:.2f}%**")
         
-        # ==========================================
-        # 📊 顯示全部 11 名公主的機率排名 (進度條版)
-        # ==========================================
-        st.write("---")
+    # ---- 👉 右側欄位：放 11 名公主的候選機率排名 ----
+    with col2:
         st.write("🔍 **所有 11 名公主候選機率排名：**")
         
-        # 取得全部 11 名的排序 (從高到低)
+        # 修正：使用正確的 torch.topk 進行 11 名的大到小排序
         all_prob, all_idx = torch.topk(probabilities, len(CLASS_NAMES))
         
         for i in range(len(CLASS_NAMES)):
-            prob_value = all_prob[i].item()      # 數值介於 0.0 ~ 1.0
-            prob_percentage = prob_value * 100   # 轉成百分比
+            prob_value = all_prob[i].item()      # 0.0 ~ 1.0
+            prob_percentage = prob_value * 100   # 百分比
             class_name = CLASS_NAMES[all_idx[i].item()]
             
-            # 顯示格式： 1. Elsa (艾莎): 85.20%
+            # 顯示公主名稱與百分比
             st.write(f"{i+1}. {class_name}: **{prob_percentage:.2f}%**")
-            # 顯示對應的進度條 (st.progress 只吃 0.0 ~ 1.0 之間的 float)
+            # 顯示進度條
             st.progress(prob_value)
