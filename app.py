@@ -82,7 +82,7 @@ transform_pipeline = transforms.Compose([
 ])
 
 # ==========================================
-# 📤 4. 前端 UI 與預測邏輯 (升級為專業雙欄位版面)
+# 📤 4. 前端 UI 與預測邏輯 (底部完美貼齊版)
 # ==========================================
 uploaded_file = st.file_uploader("選擇一張公主圖片...", type=["jpg", "jpeg", "png", "bmp"])
 
@@ -90,9 +90,9 @@ if uploaded_file is not None:
     # 讀取並轉換圖片
     image = Image.open(uploaded_file).convert("RGB")
     
-    # 🧠 先跑 AI 預測邏輯，把數據算好，等一下才能塞進欄位
+    # 先跑 AI 預測邏輯
     if model is not None:
-        input_tensor = transform_pipeline(image).unsqueeze(0) # 增加 Batch 維度
+        input_tensor = transform_pipeline(image).unsqueeze(0)
         with torch.no_grad():
             outputs = model(input_tensor)
             probabilities = torch.nn.functional.softmax(outputs, dim=1)[0]
@@ -101,7 +101,7 @@ if uploaded_file is not None:
         predicted_class = CLASS_NAMES[predicted_idx.item()]
         score = confidence.item() * 100
 
-    # 🎬 關鍵：使用 st.columns 把版面切成左右兩邊 (權重 1:1)
+    # 使用 st.columns 切成左右兩邊
     col1, col2 = st.columns(2)
     
     # ---- 👈 左側欄位：放上傳的圖片與主要預測結果 ----
@@ -111,19 +111,35 @@ if uploaded_file is not None:
         st.success(f"🎉 辨識結果：**{predicted_class}**")
         st.info(f"📊 信心度 (Confidence)：**{score:.2f}%**")
         
-    # ---- 👉 右側欄位：放 11 名公主的候選機率排名 ----
+    # ---- 👉 右側欄位：自製緊湊型進度條，完美貼齊左側底部 ----
     with col2:
         st.write("🔍 **所有 11 名公主候選機率排名：**")
         
-        # 修正：使用正確的 torch.topk 進行 11 名的大到小排序
+        # 進行 11 名的大到小排序
         all_prob, all_idx = torch.topk(probabilities, len(CLASS_NAMES))
         
+        # 建立自製進度條的 HTML 語法
+        html_content = '<div style="margin-top: 5px;">'
+        
         for i in range(len(CLASS_NAMES)):
-            prob_value = all_prob[i].item()      # 0.0 ~ 1.0
-            prob_percentage = prob_value * 100   # 百分比
+            prob_value = all_prob[i].item()      
+            prob_percentage = prob_value * 100   
             class_name = CLASS_NAMES[all_idx[i].item()]
             
-            # 顯示公主名稱與百分比
-            st.write(f"{i+1}. {class_name}: **{prob_percentage:.2f}%**")
-            # 顯示進度條
-            st.progress(prob_value)
+            # 透過 CSS 嚴格控制每行高度 (margin: 2px) 與緊湊度，使其底部剛好對齊左邊
+            html_content += f"""
+            <div style="margin-bottom: 3px; font-size: 14px; line-height: 1.2;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1px;">
+                    <span>{i+1}. {class_name}</span>
+                    <strong>{prob_percentage:.2f}%</strong>
+                </div>
+                <div style="background-color: #f0f2f6; border-radius: 4px; height: 6px; width: 100%;">
+                    <div style="background-color: #2b5c8f; height: 6px; border-radius: 4px; width: {prob_percentage}%;"></div>
+                </div>
+            </div>
+            """
+            
+        html_content += '</div>'
+        
+        # 渲染自製的完美對齊儀表板
+        st.markdown(html_content, unsafe_allow_html=True)
