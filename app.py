@@ -82,8 +82,10 @@ transform_pipeline = transforms.Compose([
 ])
 
 # ==========================================
-# 📤 4. 前端 UI 與預測邏輯 (緊湊無擋版 - 完美貼齊底部)
+# 📤 4. 前端 UI 與預測邏輯 (動態一飛衝天版)
 # ==========================================
+import time  # 💡 引入時間模組來做動畫控制
+
 uploaded_file = st.file_uploader("選擇一張公主圖片...", type=["jpg", "jpeg", "png", "bmp"])
 
 if uploaded_file is not None:
@@ -101,8 +103,8 @@ if uploaded_file is not None:
         predicted_class = CLASS_NAMES[predicted_idx.item()]
         score = confidence.item() * 100
 
-    # 使用 st.columns 切成左右兩邊
-    col1, col2 = st.columns(2)
+    # 使用黃金比例 [4.5, 5.5] 切分左右欄位
+    col1, col2 = st.columns([4.5, 5.5], gap="large")
     
     # ---- 👈 左側欄位：放上傳的圖片與主要預測結果 ----
     with col1:
@@ -111,26 +113,23 @@ if uploaded_file is not None:
         st.success(f"🎉 辨識結果：**{predicted_class}**")
         st.info(f"📊 信心度 (Confidence)：**{score:.2f}%**")
         
-    # ---- 👉 右側欄位：透過官方 st.html 微調間距，全數排開不擋到 ----
+    # ---- 👉 右側欄位：動態進度條，一飛衝天 ----
     with col2:
-        # ✨ Streamlit 官方標準全域 CSS 壓縮法，把原生的間距縮小，絕對不噴原始碼
+        # Streamlit 官方標準全域 CSS 壓縮間距
         st.html(
             """
             <style>
-                /* 壓縮 Streamlit 的文字塊上下間距 */
                 .stElementContainer div[data-testid="stMarkdownContainer"] p {
                     margin-bottom: 0px !important;
-                    margin-top: 2px !important;
-                    font-size: 13.5px !important;
+                    margin-top: 3px !important;
+                    font-size: 14px !important;
                 }
-                /* 壓縮進度條內建的上下大空白 */
                 .stElementContainer has-st-progress {
                     margin-bottom: 2px !important;
                     margin-top: 0px !important;
                 }
-                /* 針對舊版或通用 progress 容器微調 */
                 div[data-testid="stProgress"] {
-                    margin-bottom: 4px !important;
+                    margin-bottom: 5px !important;
                     padding-bottom: 0px !important;
                 }
             </style>
@@ -142,13 +141,38 @@ if uploaded_file is not None:
         # 進行 11 名的大到小排序
         all_prob, all_idx = torch.topk(probabilities, len(CLASS_NAMES))
         
-        # 移除了 with st.container(height=...) 限制，讓它自然舒展，不再被截斷！
+        # 💡 關鍵動態魔法：先建立 11 個空進度條的「錨點（Placeholders）」
+        progress_placeholders = []
+        target_probabilities = []
+        
         for i in range(len(CLASS_NAMES)):
             prob_value = all_prob[i].item()      
             prob_percentage = prob_value * 100   
             class_name = CLASS_NAMES[all_idx[i].item()]
             
-            # 使用原生的 write 顯示名字與百分比
+            # 先渲染文字
             st.write(f"{i+1}. {class_name}: **{prob_percentage:.2f}%**")
-            # 使用原生的 progress 進度條
-            st.progress(prob_value)
+            # 在文字下方建立一個空的、可變動的容器，並先預填 0% 的進度條
+            ph = st.empty()
+            ph.progress(0.0)
+            
+            progress_placeholders.append(ph)
+            target_probabilities.append(prob_value)
+            
+        # 🚀 衝刺動畫迴圈：讓所有進度條同步從 0 開始往右爬升
+        # 總共切成 25 步，大約在 0.5 秒內完成動畫
+        steps = 25 
+        for step in range(1, steps + 1):
+            ratio = step / steps # 目前進度的比例 (0.04 -> 1.0)
+            
+            for i in range(len(CLASS_NAMES)):
+                target = target_probabilities[i]
+                
+                # 讓動畫呈現非線性：機率低的很快就停住，機率高（接近1）的會有一路全速向上衝刺的超車感
+                current_val = target * ratio
+                
+                # 更新對應位置的進度條
+                progress_placeholders[i].progress(min(current_val, 1.0))
+                
+            # 每前進一步，稍微停頓一下下（微秒級），製造肉眼可見的流暢滑動感
+            time.sleep(0.02)
