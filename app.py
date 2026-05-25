@@ -30,41 +30,47 @@ CLASS_NAMES = [
 ]
 
 # ==========================================
-# ⚙️ 2. 載入模型權重 (支援 GitHub 自動下載)
+# ⚙️ 2. 載入模型權重 (修正快取 UI 衝突問題)
 # ==========================================
+# 保持這個函數乾淨，裡面絕對不放任何 st.xxx 元件
 @st.cache_resource
-def load_princess_model():
-    num_classes = len(CLASS_NAMES)
-    weights_path = "resnet50_fold_1_best.pth"
-    # 你的 GitHub Release 直鏈
-    download_url = "https://github.com/alohabearbear-sudo/disney-princess/releases/download/v1/resnet50_fold_1_best.pth"
-    
+def load_princess_model_core(weights_path, download_url, num_classes):
     # 建立與訓練時完全相同的 ResNet-50 架構
     model = models.resnet50(weights=None)
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     
-    # 檢查本地是否存在權重，若無則啟動自動下載
+    # 檢查本地是否存在權重，若無則聯網下載
     if not os.path.exists(weights_path):
-        with st.spinner("📥 正在從 GitHub 下載雲端模型權重（僅需下載一次，請稍候...）"):
-            try:
-                urllib.request.urlretrieve(download_url, weights_path)
-                st.toast("🎉 模型權重下載成功！", icon="✅")
-            except Exception as e:
-                st.error(f"❌ 從 GitHub 下載權重失敗: {e}")
-                return None
+        urllib.request.urlretrieve(download_url, weights_path)
                 
-    # 載入權重 (強制對應到 CPU，確保在沒有 GPU 的環境也能跑)
+    # 載入權重 (強制對應到 CPU)
+    state_dict = torch.load(weights_path, map_location=torch.device('cpu'))
+    model.load_state_dict(state_dict)
+    model.eval()
+    return model
+
+# 這個包裝函數放在外面，負責處理 UI 動畫與錯誤提示
+def get_model():
+    weights_path = "resnet50_fold_1_best.pth"
+    download_url = "https://github.com/alohabearbear-sudo/disney-princess/releases/download/v1/resnet50_fold_1_best.pth"
+    num_classes = len(CLASS_NAMES)
+    
     try:
-        state_dict = torch.load(weights_path, map_location=torch.device('cpu'))
-        model.load_state_dict(state_dict)
-        model.eval()
+        # 如果檔案不存在，我們在快取函數外面秀出下載轉圈圈
+        if not os.path.exists(weights_path):
+            with st.spinner("📥 正在從 GitHub 下載雲端模型權重（僅需下載一次，請稍候...）"):
+                model = load_princess_model_core(weights_path, download_url, num_classes)
+            st.toast("🎉 模型權重下載成功！", icon="✅")
+        else:
+            # 如果檔案早就存在，直接靜悄悄地載入快取
+            model = load_princess_model_core(weights_path, download_url, num_classes)
         return model
     except Exception as e:
-        st.error(f"❌ 載入權重錯誤，可能檔案損毀: {e}")
+        st.error(f"❌ 載入模型失敗！原因: {e}")
         return None
 
-# 初始化載入模型
-model = load_princess_model()
+# 🚀 正式初始化載入模型
+model = get_model()
 
 # ==========================================
 # 🖼️ 3. 影像預處理設定
