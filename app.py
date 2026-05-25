@@ -110,9 +110,21 @@ if uploaded_file is not None:
         st.success(f"🎉 辨識結果：**{predicted_class}**")
         st.info(f"📊 信心度 (Confidence)：**{score:.2f}%**")
         
-        # 顯示前三名機率
+        # ==========================================
+        # 📊 顯示全部 11 名公主的機率排名 (進度條版)
+        # ==========================================
         st.write("---")
-        st.write("🔍 **前 3 名候選機率排名：**")
-        top3_prob, top3_idx = torch.top_k(probabilities, 3)
-        for i in range(3):
-            st.write(f"{i+1}. {CLASS_NAMES[top3_idx[i].item()]}: **{top3_prob[i].item()*100:.2f}%**")
+        st.write("🔍 **所有 11 名公主候選機率排名：**")
+        
+        # 取得全部 11 名的排序 (從高到低)
+        all_prob, all_idx = torch.top_k(probabilities, len(CLASS_NAMES))
+        
+        for i in range(len(CLASS_NAMES)):
+            prob_value = all_prob[i].item()      # 數值介於 0.0 ~ 1.0
+            prob_percentage = prob_value * 100   # 轉成百分比
+            class_name = CLASS_NAMES[all_idx[i].item()]
+            
+            # 顯示格式： 1. Elsa (艾莎): 85.20%
+            st.write(f"{i+1}. {class_name}: **{prob_percentage:.2f}%**")
+            # 顯示對應的進度條 (st.progress 只吃 0.0 ~ 1.0 之間的 float)
+            st.progress(prob_value)
