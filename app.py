@@ -11,8 +11,8 @@ import urllib.request
 # ==========================================
 st.set_page_config(page_title="迪士尼公主 AI 辨識系統", page_icon="👑", layout="wide")
 
-st.title("👑 AI的精準度：玻璃鞋能幫王子找對公主嗎？")
-st.write("上傳一張迪士尼公主的圖片，讓玻璃鞋幫忙辨識她是誰！")
+st.title("👑 玻璃鞋的精準度：AI能幫王子找對落跑的公主嗎？")
+st.write("請上傳一張迪士尼公主的圖片，讓玻璃鞋幫忙辨識她是誰！")
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
 CLASS_NAMES = [
