@@ -82,7 +82,7 @@ transform_pipeline = transforms.Compose([
 ])
 
 # ==========================================
-# 📤 4. 前端 UI 與預測邏輯 (容器高度對齊版 - 安全不噴碼)
+# 📤 4. 前端 UI 與預測邏輯 (緊湊無擋版 - 完美貼齊底部)
 # ==========================================
 uploaded_file = st.file_uploader("選擇一張公主圖片...", type=["jpg", "jpeg", "png", "bmp"])
 
@@ -111,22 +111,44 @@ if uploaded_file is not None:
         st.success(f"🎉 辨識結果：**{predicted_class}**")
         st.info(f"📊 信心度 (Confidence)：**{score:.2f}%**")
         
-    # ---- 👉 右側欄位：使用固定高度容器，保證底部與左邊對齊 ----
+    # ---- 👉 右側欄位：透過官方 st.html 微調間距，全數排開不擋到 ----
     with col2:
+        # ✨ Streamlit 官方標準全域 CSS 壓縮法，把原生的間距縮小，絕對不噴原始碼
+        st.html(
+            """
+            <style>
+                /* 壓縮 Streamlit 的文字塊上下間距 */
+                .stElementContainer div[data-testid="stMarkdownContainer"] p {
+                    margin-bottom: 0px !important;
+                    margin-top: 2px !important;
+                    font-size: 13.5px !important;
+                }
+                /* 壓縮進度條內建的上下大空白 */
+                .stElementContainer has-st-progress {
+                    margin-bottom: 2px !important;
+                    margin-top: 0px !important;
+                }
+                /* 針對舊版或通用 progress 容器微調 */
+                div[data-testid="stProgress"] {
+                    margin-bottom: 4px !important;
+                    padding-bottom: 0px !important;
+                }
+            </style>
+            """
+        )
+        
         st.write("🔍 **所有 11 名公主候選機率排名：**")
         
         # 進行 11 名的大到小排序
         all_prob, all_idx = torch.topk(probabilities, len(CLASS_NAMES))
         
-        # 💡 核心魔法：建立一個固定高度的區塊（410 像素是大約對齊左邊底部的數值）
-        # 你可以自由把 410 改成 390 或 420，直到它在你的瀏覽器畫面上完美拉平！
-        with st.container(height=410, border=False):
-            for i in range(len(CLASS_NAMES)):
-                prob_value = all_prob[i].item()      
-                prob_percentage = prob_value * 100   
-                class_name = CLASS_NAMES[all_idx[i].item()]
-                
-                # 使用原生的 write 顯示名字與百分比
-                st.write(f"{i+1}. {class_name}: **{prob_percentage:.2f}%**")
-                # 使用原生的 progress 進度條，絕對不噴程式碼
-                st.progress(prob_value)
+        # 移除了 with st.container(height=...) 限制，讓它自然舒展，不再被截斷！
+        for i in range(len(CLASS_NAMES)):
+            prob_value = all_prob[i].item()      
+            prob_percentage = prob_value * 100   
+            class_name = CLASS_NAMES[all_idx[i].item()]
+            
+            # 使用原生的 write 顯示名字與百分比
+            st.write(f"{i+1}. {class_name}: **{prob_percentage:.2f}%**")
+            # 使用原生的 progress 進度條
+            st.progress(prob_value)
