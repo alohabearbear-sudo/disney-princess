@@ -117,7 +117,7 @@ if uploaded_file is not None:
         st.write("🔍 **所有 11 名公主候選機率排名：**")
         
         # 取得全部 11 名的排序 (從高到低)
-        all_prob, all_idx = torch.top_k(probabilities, len(CLASS_NAMES))
+        all_prob, all_idx = torch.topk(probabilities, len(CLASS_NAMES))
         
         for i in range(len(CLASS_NAMES)):
             prob_value = all_prob[i].item()      # 數值介於 0.0 ~ 1.0
