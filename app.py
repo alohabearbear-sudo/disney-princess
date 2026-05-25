@@ -12,7 +12,7 @@ import urllib.request
 st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layout="wide")
 
 st.title("👑 迪士尼公主辨識器 by Jimmy Chen：AI能夠幫王子找到落跑的公主嗎？")
-st.write("請上傳一張迪士尼公主的圖片，讓玻璃鞋幫忙辨識她是誰！")
+st.write("請上傳一張迪士尼公主的圖片，讓AI幫忙辨識她是誰！")
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
 CLASS_NAMES = [
@@ -86,7 +86,7 @@ transform_pipeline = transforms.Compose([
 # ==========================================
 import time  # 💡 引入時間模組來做動畫控制
 
-uploaded_file = st.file_uploader("選擇一張公主圖片...", type=["jpg", "jpeg", "png", "bmp"])
+uploaded_file = st.file_uploader("請選擇一張迪士尼公主的圖片...", type=["jpg", "jpeg", "png", "bmp"])
 
 if uploaded_file is not None:
     # 讀取並轉換圖片
