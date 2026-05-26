@@ -20,7 +20,7 @@ st.markdown("# 👑 《王子的尋人啟事》：落跑公主在那兒??")
 st.markdown("## 🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen")
 
 # 3. 放大操作說明
-st.markdown("### 📸 別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官幫忙辨識她是誰！")
+st.markdown("### 📸 別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官和魔鏡幫忙找出她是誰！")
 
 # 分隔線
 st.markdown("---")
@@ -124,7 +124,7 @@ if uploaded_file is not None:
     # ---- 👈 左側欄位：放上傳的圖片與主要預測結果 ----
     with col1:
         st.image(image, caption="📷 上傳的圖片", use_container_width=True)
-        st.write("🧠 AI 辨識中...")
+        st.write("🧠 AI 皇家搜查官搜尋中...")
         st.success(f"🎉 魔鏡辨識結果：昨晚那位女孩是 **{predicted_class}**")
         st.info(f"📊 魔鏡辨識信心度 (Confidence)：**{score:.2f}%**")
         
