@@ -101,7 +101,7 @@ transform_pipeline = transforms.Compose([
 # ==========================================
 import time  # 💡 引入時間模組來做動畫控制
 
-uploaded_file = st.file_uploader("***", type=["jpg", "jpeg", "png", "bmp"])
+uploaded_file = st.file_uploader("快動手試試看吧!", type=["jpg", "jpeg", "png", "bmp"])
 
 if uploaded_file is not None:
     # 讀取並轉換圖片
