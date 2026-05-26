@@ -148,9 +148,9 @@ if uploaded_file is not None:
     # ---- 👈 左側欄位 ----
     with col1:
         st.image(image, caption="📷 上傳的圖片", use_container_width=True)
-        st.write("🧠 皇家 5-Fold 審查委員會密集搜查中...")
-        st.success(f"🎉 AI 委員會聯合判定：昨晚舞會那位女孩是 **{predicted_class}**")
-        st.info(f"📊 綜合辨識信心度 (Ensemble Confidence)：**{score:.2f}%**")
+        st.write("🧠 Jimmy Chen 皇家審查官密集搜查中...")
+        st.success(f"🎉 AI 魔鏡判定：昨晚舞會那位女孩是 **{predicted_class}**")
+        st.info(f"📊 AI 魔鏡信心度 (Ensemble Confidence)：**{score:.2f}%**")
         
     # ---- 👉 右側欄位 ----
     with col2:
