@@ -12,7 +12,7 @@ import urllib.request
 st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layout="wide")
 
 st.title("👑 《王子的尋人啟事》：AI能夠幫王子找到落跑的公主嗎？ by Jimmy Chen")
-st.write("別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓AI幫忙辨識她是誰！")
+st.write("別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官幫忙辨識她是誰！")
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
 CLASS_NAMES = [
