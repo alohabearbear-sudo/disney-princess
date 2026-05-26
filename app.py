@@ -13,17 +13,23 @@ st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layo
 
 import streamlit as st
 
+# 1. 主標題
 st.markdown("# 👑 《王子的尋人啟事》：")
 
-# 第二行：改為 24px
-st.markdown('<span style="font-size: 24px;">🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen</span>', unsafe_allow_html=True)
+# 2. 放大副標題
+st.markdown("## 🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen")
 
-# 第三行：改為 20px
-st.markdown('<span style="font-size: 20px;">📸 別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官幫忙辨識她是誰！</span>', unsafe_allow_html=True)
+# 3. 放大操作說明
+st.markdown("### 📸 別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官幫忙辨識她是誰！")
 
-# 第四行：改為 20px，並留空 file_uploader 的 label
-st.markdown('<span style="font-size: 20px; font-weight: bold;">📥 請選擇一張迪士尼公主的圖片...</span>', unsafe_allow_html=True)
-uploaded_file = st.file_uploader("", type=["png", "jpg", "jpeg"])
+# 分隔線
+st.markdown("---")
+
+# 4. 放大版的上傳提示
+st.markdown("### 📥 請選擇一張迪士尼公主的圖片...")
+
+# 【核心修正】：這裡只呼叫一次 file_uploader，並且第一個參數傳入空字串 "" 隱藏原本的小字標籤
+uploaded_file = st.file_uploader("", type=["png", "jpg", "jpeg", "bmp"])
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
 CLASS_NAMES = [
