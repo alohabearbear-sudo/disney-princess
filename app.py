@@ -28,8 +28,6 @@ st.markdown("---")
 # 4. 放大版的上傳提示
 st.markdown("### 📥 請選擇一張迪士尼公主的圖片...")
 
-# 【核心修正】：這裡只呼叫一次 file_uploader，並且第一個參數傳入空字串 "" 隱藏原本的小字標籤
-uploaded_file = st.file_uploader("", type=["png", "jpg", "jpeg", "bmp"])
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
 CLASS_NAMES = [
