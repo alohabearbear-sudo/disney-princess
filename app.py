@@ -14,7 +14,7 @@ st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layo
 import streamlit as st
 
 # 1. 主標題
-st.markdown("# 👑 《王子的尋人啟事》：")
+st.markdown("# 👑 《王子的尋人啟事》：落跑公主在那兒??")
 
 # 2. 放大副標題
 st.markdown("## 🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen")
