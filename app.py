@@ -125,7 +125,7 @@ if uploaded_file is not None:
     with col1:
         st.image(image, caption="📷 上傳的圖片", use_container_width=True)
         st.write("🧠 AI 皇家搜查官搜尋中...")
-        st.success(f"🎉 魔鏡辨識結果：昨晚那位女孩是 **{predicted_class}**")
+        st.success(f"🎉 魔鏡辨識結果：昨晚舞會那位女孩是 **{predicted_class}**")
         st.info(f"📊 魔鏡辨識信心度 (Confidence)：**{score:.2f}%**")
         
     # ---- 👉 右側欄位：動態進度條，一飛衝天 ----
