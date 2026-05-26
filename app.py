@@ -11,11 +11,19 @@ import urllib.request
 # ==========================================
 st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layout="wide")
 
-st.title("""
-👑 《王子的尋人啟事》：
-🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen
-""")
-st.write("📸別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官幫忙辨識她是誰！")
+import streamlit as st
+
+st.markdown("# 👑 《王子的尋人啟事》：")
+
+# 第二行：改為 24px
+st.markdown('<span style="font-size: 24px;">🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen</span>', unsafe_allow_html=True)
+
+# 第三行：改為 20px
+st.markdown('<span style="font-size: 20px;">📸 別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官幫忙辨識她是誰！</span>', unsafe_allow_html=True)
+
+# 第四行：改為 20px，並留空 file_uploader 的 label
+st.markdown('<span style="font-size: 20px; font-weight: bold;">📥 請選擇一張迪士尼公主的圖片...</span>', unsafe_allow_html=True)
+uploaded_file = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
 CLASS_NAMES = [
