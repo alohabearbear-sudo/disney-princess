@@ -11,7 +11,10 @@ import urllib.request
 # ==========================================
 st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layout="wide")
 
-st.title("👑 《王子的尋人啟事》：🔍昨晚跳舞今早認不出？AI 拯救王子的重度臉盲症 by Jimmy Chen")
+st.title("""
+👑 《王子的尋人啟事》：
+🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen
+""")
 st.write("📸別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 AI 皇家搜查官幫忙辨識她是誰！")
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
