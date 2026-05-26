@@ -17,7 +17,7 @@ import streamlit as st
 st.markdown("# 👑 《王子的尋人啟事》：落跑公主在那兒??")
 
 # 2. 放大副標題
-st.markdown("## 🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症 by Jimmy Chen")
+st.markdown("## 🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症")
 
 # 3. 放大操作說明
 st.markdown("### 📸 別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 Jimmy Chen 皇家搜查官和 AI 魔鏡幫忙找出她是誰！")
