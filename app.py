@@ -7,22 +7,38 @@ import os
 import urllib.request
 import time  # 💡 引入時間模組來做動畫控制
 
-# 隱藏 Streamlit 雲端下方的頁尾與導覽列工具
-hide_streamlit_style = """
-            <style>
-            /* 隱藏底部 Streamlit 導覽與社群功能區塊 */
-            div[data-testid="stStatusWidget"] {visibility: hidden;}
-            footer {visibility: hidden;}
-            
-            #MainMenu {visibility: hidden;}
-            header {visibility: hidden;}
-            
-            /* 針對特定雲端卡片元件進行隱藏 */
-            iframe[title="streamlit_sharing.public_apps_framework"] {display: none;}
-            div.stAppDeployButton {display: none;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+import streamlit.components.v1 as components
+
+# 注入 JavaScript 來動態監控並刪除底部元件
+components.html(
+    """
+    <script>
+    const removeElements = () => {
+        // 尋找所有可能是 Streamlit 雲端導覽列的元素
+        const badges = window.parent.document.querySelectorAll('[class*="viewerBadge"], [data-testid="stStatusWidget"], footer');
+        badges.forEach(el => el.remove());
+        
+        // 尋找包裹著社群功能的 iframe 並移除
+        const iframes = window.parent.document.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+            if (iframe.src.includes('streamlit') || !iframe.src) {
+                iframe.remove();
+            }
+        });
+    };
+
+    // 每 0.5 秒檢查一次，連續檢查 5 秒（確保頁面完全載入後也能殺掉它）
+    let counter = 0;
+    const interval = setInterval(() => {
+        removeElements();
+        counter++;
+        if (counter > 10) clearInterval(interval);
+    }, 500);
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 
 
 
