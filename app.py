@@ -7,6 +7,26 @@ import os
 import urllib.request
 import time  # 💡 引入時間模組來做動畫控制
 
+# 隱藏 Streamlit 雲端下方的頁尾與導覽列工具
+hide_streamlit_style = """
+            <style>
+            /* 隱藏底部 Streamlit 導覽與社群功能區塊 */
+            div[data-testid="stStatusWidget"] {visibility: hidden;}
+            footer {visibility: hidden;}
+            
+            #MainMenu {visibility: hidden;}
+            header {visibility: hidden;}
+            
+            /* 針對特定雲端卡片元件進行隱藏 */
+            iframe[title="streamlit_sharing.public_apps_framework"] {display: none;}
+            div.stAppDeployButton {display: none;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+
+
+
 # ==========================================
 # 👑 1. 設定頁面與 11 類公主標籤 (完全符合系統排序)
 # ==========================================
