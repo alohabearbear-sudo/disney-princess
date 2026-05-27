@@ -7,38 +7,25 @@ import os
 import urllib.request
 import time  # 💡 引入時間模組來做動畫控制
 
-import streamlit.components.v1 as components
+hide_style = """
+<style>
+/* 1. 隱藏頁尾與最底部的狀態列 */
+footer {visibility: hidden; display: none !important;}
+div[data-testid="stStatusWidget"] {visibility: hidden; display: none !important;}
 
-# 注入 JavaScript 來動態監控並刪除底部元件
-components.html(
-    """
-    <script>
-    const removeElements = () => {
-        // 尋找所有可能是 Streamlit 雲端導覽列的元素
-        const badges = window.parent.document.querySelectorAll('[class*="viewerBadge"], [data-testid="stStatusWidget"], footer');
-        badges.forEach(el => el.remove());
-        
-        // 尋找包裹著社群功能的 iframe 並移除
-        const iframes = window.parent.document.querySelectorAll('iframe');
-        iframes.forEach(iframe => {
-            if (iframe.src.includes('streamlit') || !iframe.src) {
-                iframe.remove();
-            }
-        });
-    };
+/* 2. 鎖定 Streamlit 雲端注入的社群導覽列（通常是最後一個元件或 iframe） */
+iframe {display: none !important;} /* 如果你的 App 本身沒用到 iframe，這招非常有效 */
 
-    // 每 0.5 秒檢查一次，連續檢查 5 秒（確保頁面完全載入後也能殺掉它）
-    let counter = 0;
-    const interval = setInterval(() => {
-        removeElements();
-        counter++;
-        if (counter > 10) clearInterval(interval);
-    }, 500);
-    </script>
-    """,
-    height=0,
-    width=0,
-)
+/* 3. 針對特定屬性與類別進行爆破 */
+div[class*="viewerBadge"] {display: none !important;}
+div[class*="StyledAppViewBlockContainer"] ~ div {display: none !important;}
+div[data-testid="stToolbar"] {display: none !important;}
+
+/* 4. 調整底部間距，避免留白 */
+.main .block-container {padding-bottom: 0px !important;}
+</style>
+"""
+st.markdown(hide_style, unsafe_allow_html=True)
 
 
 
