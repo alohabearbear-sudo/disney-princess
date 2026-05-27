@@ -7,28 +7,6 @@ import os
 import urllib.request
 import time  # 💡 引入時間模組來做動畫控制
 
-hide_style = """
-<style>
-/* 1. 隱藏頁尾與最底部的狀態列 */
-footer {visibility: hidden; display: none !important;}
-div[data-testid="stStatusWidget"] {visibility: hidden; display: none !important;}
-
-/* 2. 鎖定 Streamlit 雲端注入的社群導覽列（通常是最後一個元件或 iframe） */
-iframe {display: none !important;} /* 如果你的 App 本身沒用到 iframe，這招非常有效 */
-
-/* 3. 針對特定屬性與類別進行爆破 */
-div[class*="viewerBadge"] {display: none !important;}
-div[class*="StyledAppViewBlockContainer"] ~ div {display: none !important;}
-div[data-testid="stToolbar"] {display: none !important;}
-
-/* 4. 調整底部間距，避免留白 */
-.main .block-container {padding-bottom: 0px !important;}
-</style>
-"""
-st.markdown(hide_style, unsafe_allow_html=True)
-
-
-
 
 # ==========================================
 # 👑 1. 設定頁面與 11 類公主標籤 (完全符合系統排序)
