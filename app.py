@@ -16,16 +16,16 @@ st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layo
 st.markdown("# 👑 《王子的尋人啟事》：落跑公主在那兒??")
 
 # 2. 放大副標題
-st.markdown("## 🔍 昨晚跳舞今早認不出？讓 AI 來拯救王子的重度臉盲症")
+st.markdown("## 🔍 昨晚跳舞，今早就認不出？讓 AI 來拯救王子的重度臉盲症")
 
 # 3. 放大操作說明
-st.markdown("### 📸 別再拿玻璃鞋挨家挨戶蹭，請上傳一張迪士尼公主的圖片，讓 Jimmy Chen 皇家搜查官和 AI 魔鏡幫忙找出她是誰！")
+st.markdown("### 📸 別再拿玻璃鞋挨家挨戶蹭，讓皇家搜查官和 AI 魔鏡幫忙找出她是誰！")
 
 # 分隔線
 st.markdown("---")
 
 # 4. 放大版的上傳提示
-st.markdown("### 📥 請選擇一張迪士尼公主的圖片...")
+st.markdown("### 📥 請上傳一張迪士尼公主的圖片...")
 
 # ⚠️ 系統中大寫排前面、小寫排後面的絕對順序
 CLASS_NAMES = [
@@ -80,13 +80,13 @@ def get_ensemble_models():
         missing_folds = [i for i in range(1, 6) if not os.path.exists(f"resnet50_fold_{i}_best.pth")]
         
         if missing_folds:
-            with st.spinner(f"📥 正在從 GitHub 下載皇家 5-Fold 雲端模型權重（僅需下載一次，請稍候...）"):
+            with st.spinner(f"📥 正在從 GitHub 下載皇家審查官 5-Fold 雲端模型權重（僅需下載一次，請稍候...）"):
                 for i in range(1, 6):
                     w_path = f"resnet50_fold_{i}_best.pth"
                     d_url = f"{base_url}/resnet50_fold_{i}_best.pth"
                     mdl = load_single_fold_model_core(i, w_path, d_url, num_classes)
                     models_list.append(mdl)
-            st.toast("🎉 皇家 5-Fold 委員會模型權重全數加載成功！", icon="✅")
+            st.toast("🎉 皇家審查官 5-Fold 模型權重全數加載成功！", icon="✅")
         else:
             # 如果全都在本地了，靜悄悄加載
             for i in range(1, 6):
@@ -148,7 +148,7 @@ if uploaded_file is not None:
     # ---- 👈 左側欄位 ----
     with col1:
         st.image(image, caption="📷 上傳的圖片", use_container_width=True)
-        st.write("🧠 Jimmy Chen 皇家審查官密集搜查中...")
+        st.write("🧠 皇家審查官密集搜查中...")
         st.success(f"🎉 AI 魔鏡判定：昨晚舞會那位女孩是 **{predicted_class}**")
         st.info(f"📊 AI 魔鏡信心度 (Ensemble Confidence)：**{score:.2f}%**")
         
