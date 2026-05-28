@@ -14,7 +14,7 @@ import time  # 💡 引入時間模組來做動畫控制
 st.set_page_config(page_title="迪士尼公主辨識器", page_icon="👑", layout="wide")
 
 # 1. 主標題
-st.markdown("# 👑 《王子的尋人啟事》：落跑公主在那兒??")
+st.markdown("# 👑 《王子的尋人任務》：落跑公主在那兒??")
 
 # 2. 放大副標題
 # st.markdown("## 🔍 昨晚跳舞，今早就認不出？讓 AI 來拯救王子的重度臉盲症")
