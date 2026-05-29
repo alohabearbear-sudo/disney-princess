@@ -21,7 +21,31 @@ footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* 隱藏右下角 Streamlit 品牌按鈕 */
+[data-testid="stMainBlockContainer"] ~ div {
+    display: none !important;
+}
 
+#MainMenu {
+    display: none !important;
+}
+
+footer {
+    display: none !important;
+}
+
+/* 直接針對那個固定在右下的按鈕 */
+[class*="statusWidget"] {
+    display: none !important;
+}
+
+[data-testid="stStatusWidget"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # ==========================================
