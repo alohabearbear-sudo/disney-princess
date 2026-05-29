@@ -7,64 +7,22 @@ import os
 import urllib.request
 import time  # 💡 引入時間模組來做動畫控制
 
-
 st.markdown("""
 <style>
-/* 隱藏底部 deployed by streamlit 的整個 footer */
-footer {visibility: hidden;}
-
-/* 隱藏右下角的 streamlit 選單按鈕 */
-[data-testid="stMainBlockContainer"] > div:last-child {visibility: hidden;}
-
-/* 核心：隱藏 manage app 按鈕（會洩漏你的其他 app） */
-[data-testid="manage-app-button"] {display: none !important;}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-/* 隱藏右下角 Streamlit 品牌按鈕 */
-[data-testid="stMainBlockContainer"] ~ div {
-    display: none !important;
-}
-
-#MainMenu {
-    display: none !important;
-}
-
-footer {
-    display: none !important;
-}
-
-/* 直接針對那個固定在右下的按鈕 */
-[class*="statusWidget"] {
-    display: none !important;
-}
-
-[data-testid="stStatusWidget"] {
-    display: none !important;
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 120px;
+    height: 60px;
+    background-color: white;
+    z-index: 99999;
+    pointer-events: none;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* 隱藏粉紅色 viewer badge 按鈕 */
-[class*="_viewerBadge"] {
-    display: none !important;
-}
-
-/* 隱藏外層 profile container */
-[class*="_profileContainer"] {
-    display: none !important;
-}
-
-/* 隱藏整個容器 */
-[class*="_container_gzau3"] {
-    display: none !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
 
 # ==========================================
