@@ -8,6 +8,22 @@ import urllib.request
 import time  # 💡 引入時間模組來做動畫控制
 
 
+st.markdown("""
+<style>
+/* 隱藏底部 deployed by streamlit 的整個 footer */
+footer {visibility: hidden;}
+
+/* 隱藏右下角的 streamlit 選單按鈕 */
+[data-testid="stMainBlockContainer"] > div:last-child {visibility: hidden;}
+
+/* 核心：隱藏 manage app 按鈕（會洩漏你的其他 app） */
+[data-testid="manage-app-button"] {display: none !important;}
+</style>
+""", unsafe_allow_html=True)
+
+
+
+
 # ==========================================
 # 👑 1. 設定頁面與 11 類公主標籤 (完全符合系統排序)
 # ==========================================
