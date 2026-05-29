@@ -16,11 +16,29 @@ body::after {
     right: 0;
     width: 120px;
     height: 60px;
-    background-color: white;
     z-index: 99999;
     pointer-events: none;
+    background-color: white;
+}
+
+/* 系統深色模式 */
+@media (prefers-color-scheme: dark) {
+    body::after {
+        background-color: #0e1117;
+    }
+}
+
+/* Streamlit 手動切換淺色 */
+[data-theme="light"] body::after {
+    background-color: white;
+}
+
+/* Streamlit 手動切換深色 */
+[data-theme="dark"] body::after {
+    background-color: #0e1117;
 }
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 
