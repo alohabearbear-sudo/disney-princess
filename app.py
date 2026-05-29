@@ -9,7 +9,7 @@ import time  # 💡 引入時間模組來做動畫控制
 
 st.markdown("""
 <style>
-/* 蓋住右下角（admin 看到的 Manage app 旁邊） */
+/* 蓋住 admin 看到的粉紅色徽章 */
 body::after {
     content: '';
     position: fixed;
@@ -22,14 +22,14 @@ body::after {
     background-color: white;
 }
 
-/* 蓋住一般使用者看到的 "Hosted with Streamlit" 紅色橫幅 */
+/* 蓋住一般使用者看到的 "Hosted with Streamlit" + 紫色圓形按鈕 */
 body::before {
     content: '';
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 220px;
-    height: 50px;
+    width: 350px;
+    height: 60px;
     z-index: 99999;
     pointer-events: none;
     background-color: white;
