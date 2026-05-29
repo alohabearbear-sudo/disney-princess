@@ -7,45 +7,6 @@ import os
 import urllib.request
 import time  # 💡 引入時間模組來做動畫控制
 
-st.markdown("""
-<style>
-body::before {
-    content: '';
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    height: 60px;
-    z-index: 99999;
-    pointer-events: none;
-    background-color: white;
-}
-
-body::after {
-    content: '';
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 120px;
-    height: 80px;
-    z-index: 99999;
-    pointer-events: none;
-    background-color: white;
-}
-
-@media (prefers-color-scheme: dark) {
-    body::before { background-color: #0e1117; }
-    body::after { background-color: #0e1117; }
-}
-
-[data-theme="light"] body::before { background-color: white; }
-[data-theme="light"] body::after { background-color: white; }
-
-[data-theme="dark"] body::before { background-color: #0e1117; }
-[data-theme="dark"] body::after { background-color: #0e1117; }
-</style>
-""", unsafe_allow_html=True)
-
 
 
 # ==========================================
