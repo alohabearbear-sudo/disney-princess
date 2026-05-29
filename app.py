@@ -9,7 +9,6 @@ import time  # 💡 引入時間模組來做動畫控制
 
 st.markdown("""
 <style>
-/* 蓋住整個底部 iframe 區域（user 看到的 Hosted with Streamlit）*/
 body::before {
     content: '';
     position: fixed;
@@ -22,14 +21,13 @@ body::before {
     background-color: white;
 }
 
-/* 蓋住 admin 看到的粉紅色徽章 */
 body::after {
     content: '';
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 25px;
-    height: 48px;
+    width: 120px;
+    height: 80px;
     z-index: 99999;
     pointer-events: none;
     background-color: white;
