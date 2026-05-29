@@ -47,6 +47,25 @@ footer {
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* 隱藏粉紅色 viewer badge 按鈕 */
+[class*="_viewerBadge"] {
+    display: none !important;
+}
+
+/* 隱藏外層 profile container */
+[class*="_profileContainer"] {
+    display: none !important;
+}
+
+/* 隱藏整個容器 */
+[class*="_container_gzau3"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 # ==========================================
 # 👑 1. 設定頁面與 11 類公主標籤 (完全符合系統排序)
