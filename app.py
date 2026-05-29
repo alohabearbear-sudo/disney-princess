@@ -9,6 +9,19 @@ import time  # 💡 引入時間模組來做動畫控制
 
 st.markdown("""
 <style>
+/* 蓋住整個底部 iframe 區域（user 看到的 Hosted with Streamlit）*/
+body::before {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    z-index: 99999;
+    pointer-events: none;
+    background-color: white;
+}
+
 /* 蓋住 admin 看到的粉紅色徽章 */
 body::after {
     content: '';
@@ -22,29 +35,16 @@ body::after {
     background-color: white;
 }
 
-/* 蓋住一般使用者看到的 "Hosted with Streamlit" + 紫色圓形按鈕 */
-body::before {
-    content: '';
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 350px;
-    height: 60px;
-    z-index: 99999;
-    pointer-events: none;
-    background-color: white;
-}
-
 @media (prefers-color-scheme: dark) {
-    body::after { background-color: #0e1117; }
     body::before { background-color: #0e1117; }
+    body::after { background-color: #0e1117; }
 }
 
-[data-theme="light"] body::after { background-color: white; }
 [data-theme="light"] body::before { background-color: white; }
+[data-theme="light"] body::after { background-color: white; }
 
-[data-theme="dark"] body::after { background-color: #0e1117; }
 [data-theme="dark"] body::before { background-color: #0e1117; }
+[data-theme="dark"] body::after { background-color: #0e1117; }
 </style>
 """, unsafe_allow_html=True)
 
