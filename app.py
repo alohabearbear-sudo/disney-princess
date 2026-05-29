@@ -15,7 +15,7 @@ body::after {
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 56px;  /* 跟 manage app 按鈕一樣寬 */
+    width: 40px;  /* 跟 manage app 按鈕一樣寬 */
     height: 48px; /* 跟 manage app 按鈕一樣高 */
     z-index: 99999;
     pointer-events: none;
