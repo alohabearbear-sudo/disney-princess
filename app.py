@@ -9,13 +9,14 @@ import time  # 💡 引入時間模組來做動畫控制
 
 st.markdown("""
 <style>
+/* 蓋住 Manage app 按鈕旁邊的粉紅色徽章 */
 body::after {
     content: '';
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 120px;
-    height: 60px;
+    width: 56px;  /* 跟 manage app 按鈕一樣寬 */
+    height: 48px; /* 跟 manage app 按鈕一樣高 */
     z-index: 99999;
     pointer-events: none;
     background-color: white;
