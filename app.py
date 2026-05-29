@@ -9,32 +9,42 @@ import time  # 💡 引入時間模組來做動畫控制
 
 st.markdown("""
 <style>
-/* 蓋住 Manage app 按鈕旁邊的粉紅色徽章 */
+/* 蓋住右下角（admin 看到的 Manage app 旁邊） */
 body::after {
     content: '';
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 25px;  /* 跟 manage app 按鈕一樣寬 */
-    height: 48px; /* 跟 manage app 按鈕一樣高 */
+    width: 25px;
+    height: 48px;
+    z-index: 99999;
+    pointer-events: none;
+    background-color: white;
+}
+
+/* 蓋住一般使用者看到的 "Hosted with Streamlit" 紅色橫幅 */
+body::before {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 220px;
+    height: 50px;
     z-index: 99999;
     pointer-events: none;
     background-color: white;
 }
 
 @media (prefers-color-scheme: dark) {
-    body::after {
-        background-color: #0e1117;
-    }
+    body::after { background-color: #0e1117; }
+    body::before { background-color: #0e1117; }
 }
 
-[data-theme="light"] body::after {
-    background-color: white;
-}
+[data-theme="light"] body::after { background-color: white; }
+[data-theme="light"] body::before { background-color: white; }
 
-[data-theme="dark"] body::after {
-    background-color: #0e1117;
-}
+[data-theme="dark"] body::after { background-color: #0e1117; }
+[data-theme="dark"] body::before { background-color: #0e1117; }
 </style>
 """, unsafe_allow_html=True)
 
